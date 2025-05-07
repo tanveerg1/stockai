@@ -18,9 +18,6 @@ from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.svm import SVC
-# Load the model in your application
-from tensorflow.keras.models import load_model
-lstm_model = load_model("lstm_model.h5")
 
 warnings.filterwarnings("ignore")
 
@@ -67,8 +64,6 @@ if gpus:
         print(e)
 
 tf.config.set_visible_devices([], 'GPU')
-# Save the trained model locally
-# model.save("lstm_model.h5")
 
 
 # Fetch stock data
