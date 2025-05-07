@@ -9,8 +9,6 @@ import os
 import tensorflow as tf
 from ta import add_all_ta_features
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-# import matplotlib.pyplot as plt
-# import matplotlib.dates as mdates
 from functools import lru_cache
 from alpha_vantage.timeseries import TimeSeries
 from pytrends.request import TrendReq
@@ -20,7 +18,9 @@ from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.svm import SVC
-
+# Load the model in your application
+from tensorflow.keras.models import load_model
+lstm_model = load_model("lstm_model.h5")
 
 warnings.filterwarnings("ignore")
 
@@ -65,6 +65,11 @@ if gpus:
         )
     except RuntimeError as e:
         print(e)
+
+tf.config.set_visible_devices([], 'GPU')
+# Save the trained model locally
+# model.save("lstm_model.h5")
+
 
 # Fetch stock data
 def fetch_stock_data(ticker, period="1y"):

@@ -5,16 +5,15 @@ tweepy
 praw
 ta
 vaderSentiment
-matplotlib
 alpha_vantage
 asyncio
 pytrends
 tensorflow
 transformers
 scikit-learn
-pyttsx3
 requests
 flask
 pymongo
 bcrypt
 tf-keras
+gunicorn
