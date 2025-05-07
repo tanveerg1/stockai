@@ -285,5 +285,8 @@ def process_query(query, ticker):
         print(response)
         return response
     else:
-        print(f"{response}")
+        response = "I'm sorry, I couldn't understand your query. Please try again."
+        tts_engine.say(response)
+        tts_engine.runAndWait()
+        print(response)
         return response
