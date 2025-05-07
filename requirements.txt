@@ -15,3 +15,5 @@ scikit-learn
 pyttsx3
 requests
 flask
+pymongo
+bcrypt
