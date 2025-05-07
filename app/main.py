@@ -4,6 +4,8 @@ from server_api import client  # Import the MongoDB client
 import os
 from werkzeug.security import check_password_hash
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow INFO and WARNING logs
+
 # MongoDB connection
 db_name = os.getenv("MONGO_DB_NAME")
 db_collection = os.getenv("MONGO_DB_COLLECTION")
@@ -65,7 +67,7 @@ def query_stock():
     query = data.get('query', '')
 
     ##
-    # portfolio = data.get('portfolio', [])  # Portfolio sent from the app
+    portfolio = data.get('portfolio', [])  # Portfolio sent from the app
 
     if not query:
         # return jsonify({"error": "Query is required."}), 400
@@ -73,7 +75,7 @@ def query_stock():
         return jsonify({"response": "Hi there! How can I assist you with stocks today?"})
 
 
-    response = process_query(query, ticker)
+    response = process_query(query, ticker, portfolio)  # Pass the portfolio as None for now
     return jsonify({"response": response})
 
 if __name__ == '__main__':

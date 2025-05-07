@@ -25,21 +25,6 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-# My Portfolio
-portfolio = [
-    {"ticker": "VEQT.TO", "shares": 10.1572, "buy_price": 40.79, "target_price": 55},
-    {"ticker": "VGRO.TO", "shares": 14.3784, "buy_price": 34.04, "target_price": 45},
-    {"ticker": "XBB.TO", "shares": 1.4554, "buy_price": 27.59, "target_price": 30},
-    {"ticker": "XMV.TO", "shares": 14.4504, "buy_price": 41.80, "target_price": 58},
-    {"ticker": "AC.TO", "shares": 0.2064, "buy_price": 18.85, "target_price": 25},
-    {"ticker": "BB.TO", "shares": 2, "buy_price": 14.19, "target_price": 19},
-    {"ticker": "CNR.TO", "shares": 0.0076, "buy_price": 131.58, "target_price": 150},
-    {"ticker": "EQX.TO", "shares": 1, "buy_price": 12.26, "target_price": 16},
-    {"ticker": "RY.TO", "shares": 0.0632, "buy_price": 134.81, "target_price": 150},
-    {"ticker": "SHOP.TO", "shares": 0.057, "buy_price": 173.51, "target_price": 190},
-    {"ticker": "TD.TO", "shares": 0.0252, "buy_price": 84.52, "target_price": 100},
-    {"ticker": "TSLA.TO", "shares": 2, "buy_price": 32.77, "target_price": 37},
-]
 
 # Reddit API credentials
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
@@ -57,7 +42,7 @@ NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 NEWS_URL = "https://newsapi.org/v2/everything"
 
 # Initialize components
-tts_engine = pyttsx3.init() # Text-to-speech
+# tts_engine = pyttsx3.init() # Text-to-speech
 sentiment_analyzer = SentimentIntensityAnalyzer()
 chatbot = pipeline("text-generation", model="distilgpt2", max_length=50) # Conversational AI
 # api = tradeapi.REST(ALPACA_KEY, ALPACA_SECRET, base_url="https://paper-api.alpaca.markets")
@@ -250,7 +235,7 @@ def classify_intent_with_transformers(query):
     print(f"Intent: {intent}, Confidence: {confidence:.2f}")
     return intent
 
-def process_query(query, ticker):
+def process_query(query, ticker, portfolio):
     # Find the stock in the portfolio
     stock = next((s for s in portfolio if s["ticker"] == ticker), None)
     if not stock:
@@ -269,8 +254,8 @@ def process_query(query, ticker):
         data = fetch_stock_data(ticker)
         if data is None:
             response = f"Unable to fetch data for {ticker}. Please check the ticker symbol or try again later."
-            tts_engine.say(response)
-            tts_engine.runAndWait()
+            # tts_engine.say(response)
+            # tts_engine.runAndWait()
             print(response)
             return response
         lstm_model, scaler = train_lstm(data)
@@ -280,13 +265,13 @@ def process_query(query, ticker):
         
         # Speak and print response
         response = f"I recommend {recommendation} for {ticker}. {reasoning}"
-        tts_engine.say(response)
-        tts_engine.runAndWait()
+        # tts_engine.say(response)
+        # tts_engine.runAndWait()
         print(response)
         return response
     else:
         response = "I'm sorry, I couldn't understand your query. Please try again."
-        tts_engine.say(response)
-        tts_engine.runAndWait()
+        # tts_engine.say(response)
+        # tts_engine.runAndWait()
         print(response)
         return response
