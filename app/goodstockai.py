@@ -3,7 +3,7 @@ import numpy as np
 import yfinance as yf
 import tweepy
 import praw   
-import time
+import os
 from ta import add_all_ta_features
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
@@ -42,18 +42,18 @@ portfolio = [
 ]
 
 # Reddit API credentials
-REDDIT_CLIENT_ID = "YOUR_REDDIT_CLIENT_ID"
-REDDIT_CLIENT_SECRET = "YOUR_REDDIT_CLIENT_SECRET"
-REDDIT_USER_AGENT = "YOUR_REDDIT_USER_AGENT"
+REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
+REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
+REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
 
 # Configuration (replace with your API keys)
 # Alpha vantage api key = 8Y4RCIMCQ4HOMX98
 # Replace with your Alpha Vantage API key
-ALPHA_VANTAGE_KEY = "YOUR_ALPHA_VANTAGE_KEY"
-SERPAPI_KEY = "YOUR_SERPAPI_KEY"
+ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_KEY")
+SERPAPI_KEY = os.getenv("SERPAPI_KEY")
 
 # Define the API key and the URL for NewsAPI
-NEWS_API_KEY = "YOUR_NEWS_API_KEY"
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 NEWS_URL = "https://newsapi.org/v2/everything"
 
 # Initialize components
