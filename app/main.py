@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from goodstockai import process_query
-from server_api import client  # Import the MongoDB client
+from app.goodstockai import process_query
+from app.server_api import client  # Import the MongoDB client
 import os
 from werkzeug.security import check_password_hash
 
@@ -9,6 +9,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow INFO and WARNING
 # MongoDB connection
 db_name = os.getenv("MONGO_DB_NAME")
 db_collection = os.getenv("MONGO_DB_COLLECTION")
+
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
 
 # Database
 db = client[db_name]
