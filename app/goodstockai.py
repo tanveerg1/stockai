@@ -3,25 +3,24 @@ import numpy as np
 import yfinance as yf
 import tweepy
 import praw   
+import requests
+import warnings
 import os
+import tensorflow as tf
 from ta import add_all_ta_features
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-# import alpaca_trade_api as tradeapi
+# import matplotlib.pyplot as plt
+# import matplotlib.dates as mdates
 from functools import lru_cache
 from alpha_vantage.timeseries import TimeSeries
-import asyncio
 from pytrends.request import TrendReq
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
-import pyttsx3
 from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.svm import SVC
-import requests
-import warnings
+
 
 warnings.filterwarnings("ignore")
 
@@ -53,6 +52,19 @@ my_intent_classifier = pipeline("zero-shot-classification", model="facebook/bart
 intent_vectorizer = TfidfVectorizer()
 intent_clf = SVC()
 intent_trained = False
+
+# Limit TensorFlow to use only a fraction of GPU memory
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        tf.config.experimental.set_virtual_device_configuration(
+            gpus[0],
+            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=256)]
+        )
+    except RuntimeError as e:
+        print(e)
 
 # Fetch stock data
 def fetch_stock_data(ticker, period="1y"):
@@ -157,27 +169,27 @@ def fetch_realtime_quote(ticker):
         return None
     
 # Additional functions for stock recommendations and analysis would go here
-def generate_prediction_graph(data, ticker, buy_price, target_price, latest_price, predicted_price):
-    # Generate prediction graph
-    plt.figure(figsize=(10, 6))
-    plt.plot(data.index, data["Close"], label="Historical Prices", color="blue")
-    plt.axhline(y=buy_price, color="green", linestyle="--", label="Buy Price")
-    plt.axhline(y=target_price, color="red", linestyle="--", label="Target Price")
-    plt.scatter(data.index[-1], latest_price, color="orange", label="Current Price")
-    plt.scatter(data.index[-1] + pd.Timedelta(days=30), predicted_price, color="purple", label="Predicted Price")
-    plt.title(f"Stock Analysis for {ticker}")
-    plt.xlabel("Time")
-    plt.ylabel("Price")
-    plt.legend()
-    plt.grid()
+# def generate_prediction_graph(data, ticker, buy_price, target_price, latest_price, predicted_price):
+#     # Generate prediction graph
+#     plt.figure(figsize=(10, 6))
+#     plt.plot(data.index, data["Close"], label="Historical Prices", color="blue")
+#     plt.axhline(y=buy_price, color="green", linestyle="--", label="Buy Price")
+#     plt.axhline(y=target_price, color="red", linestyle="--", label="Target Price")
+#     plt.scatter(data.index[-1], latest_price, color="orange", label="Current Price")
+#     plt.scatter(data.index[-1] + pd.Timedelta(days=30), predicted_price, color="purple", label="Predicted Price")
+#     plt.title(f"Stock Analysis for {ticker}")
+#     plt.xlabel("Time")
+#     plt.ylabel("Price")
+#     plt.legend()
+#     plt.grid()
 
-    # Format x-axis for monthly intervals
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    plt.gcf().autofmt_xdate()  # Rotate date labels for better readability
+#     # Format x-axis for monthly intervals
+#     plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+#     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+#     plt.gcf().autofmt_xdate()  # Rotate date labels for better readability
 
-    plt.savefig(f"{ticker}_prediction_graph.png")  # Save the graph as an image
-    plt.show()
+#     plt.savefig(f"{ticker}_prediction_graph.png")  # Save the graph as an image
+#     plt.show()
 
 def recommend_stock(ticker, data, lstm_model, scaler, buy_price, target_price):
     # Technical analysis
