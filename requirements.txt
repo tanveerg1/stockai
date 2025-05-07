@@ -14,3 +14,4 @@ transformers
 scikit-learn
 pyttsx3
 requests
+flask
