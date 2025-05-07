@@ -70,9 +70,8 @@ def query_stock():
     portfolio = data.get('portfolio', [])  # Portfolio sent from the app
 
     if not query:
-        # return jsonify({"error": "Query is required."}), 400
         # Respond with a friendly message if no query is provided
-        return jsonify({"response": "Hi there! How can I assist you with stocks today?"})
+        return jsonify({"response": "Hi there! How can I assist you today?"})
 
 
     response = process_query(query, ticker, portfolio)  # Pass the portfolio as None for now
