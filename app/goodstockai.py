@@ -58,7 +58,8 @@ chatbot = pipeline("text-generation", model="distilgpt2", max_length=50) # Conve
 # api = tradeapi.REST(ALPACA_KEY, ALPACA_SECRET, base_url="https://paper-api.alpaca.markets")
 # Initialize the TimeSeries object
 ts = TimeSeries(key=ALPHA_VANTAGE_KEY, output_format='pandas')
-my_intent_classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+# my_intent_classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+my_intent_classifier = pipeline("zero-shot-classification", model="facebook/bart-base")
 # Intent detection for stock vs. general queries
 intent_vectorizer = TfidfVectorizer()
 intent_clf = SVC()
