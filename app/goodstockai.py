@@ -36,6 +36,8 @@ if gpus:
 
 tf.config.set_visible_devices([], 'GPU')
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU
+
 # Reddit API credentials
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
@@ -149,12 +151,12 @@ def train_lstm(data, seq_length=30):
 
     # Build the LSTM model
     model = Sequential([
-        LSTM(50, input_shape=(seq_length, 1), return_sequences=True),
-        LSTM(50),
+        LSTM(25, input_shape=(seq_length, 1), return_sequences=True),
+        LSTM(25),
         Dense(1)
     ])
     model.compile(optimizer="adam", loss="mse")
-    model.fit(X, y, epochs=5, verbose=0) # Reduced epochs for demo
+    model.fit(X, y, epochs=2, verbose=0) # Reduced epochs for demo
     return model, scaler
 
 def fetch_realtime_quote(ticker):
