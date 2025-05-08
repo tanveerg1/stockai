@@ -66,7 +66,7 @@ intent_trained = False
 
 
 # Fetch stock data
-def fetch_stock_data(ticker, period="1y"):
+def fetch_stock_data(ticker, period="30d"):
     try:
         stock = yf.Ticker(ticker)
         data = stock.history(period=period)
