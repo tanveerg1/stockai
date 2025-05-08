@@ -21,6 +21,20 @@ from sklearn.svm import SVC
 
 warnings.filterwarnings("ignore")
 
+# Limit TensorFlow to use only a fraction of GPU memory
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        tf.config.experimental.set_virtual_device_configuration(
+            gpus[0],
+            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=256)]
+        )
+    except RuntimeError as e:
+        print(e)
+
+tf.config.set_visible_devices([], 'GPU')
 
 # Reddit API credentials
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
@@ -49,21 +63,6 @@ my_intent_classifier = pipeline("zero-shot-classification", model="facebook/bart
 intent_vectorizer = TfidfVectorizer()
 intent_clf = SVC()
 intent_trained = False
-
-# Limit TensorFlow to use only a fraction of GPU memory
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-    try:
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-        tf.config.experimental.set_virtual_device_configuration(
-            gpus[0],
-            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=256)]
-        )
-    except RuntimeError as e:
-        print(e)
-
-tf.config.set_visible_devices([], 'GPU')
 
 
 # Fetch stock data
