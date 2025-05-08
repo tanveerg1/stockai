@@ -37,6 +37,8 @@ if gpus:
 tf.config.set_visible_devices([], 'GPU')
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU
+tf.config.threading.set_intra_op_parallelism_threads(1)  # Limit CPU threads
+tf.config.threading.set_inter_op_parallelism_threads(1)
 
 # Reddit API credentials
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
